@@ -1,0 +1,12 @@
+[package]
+name = "sel4_ipc"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+sel4_common = { path = "../sel4_common" }
+sel4_cspace = { path = "../sel4_cspace" }
+sel4_vspace = { path = "../sel4_vspace" }
+sel4_task = { path = "../sel4_task" }
+
+[features]
