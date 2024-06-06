@@ -1,0 +1,10 @@
+{
+    "name": "sel4_ipc",
+    "description": "Basic module for building ReL4, defining the data structure and operation interface of IPC.",
+    "authors": [{
+      "name": "CtrlZ233",
+      "email": "ctrlz.donghai@gmail.com"
+    }],
+    "keywords": ["microkernel"],
+    "doc_url": "https://github.com/rel4team/sel4_ipc/blob/main/README.md"
+  }
