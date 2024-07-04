@@ -3,11 +3,11 @@ use core::intrinsics::likely;
 use super::endpoint::*;
 use super::notification::*;
 
-use sel4_common::fault::*;
-use sel4_common::message_info::*;
-use sel4_common::registers::{
+use sel4_common::arch::{
     badgeRegister, msgInfoRegister, n_exceptionMessage, n_syscallMessage, FaultIP,
 };
+use sel4_common::fault::*;
+use sel4_common::message_info::*;
 use sel4_common::sel4_config::*;
 use sel4_common::structures::*;
 use sel4_common::utils::*;
