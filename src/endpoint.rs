@@ -13,12 +13,14 @@ pub const EPState_Send: usize = EPState::Send as usize;
 pub const EPState_Recv: usize = EPState::Recv as usize;
 
 #[derive(PartialEq, Eq, Debug)]
+/// The state of an endpoint
 pub enum EPState {
     Idle = 0,
     Send = 1,
     Recv = 2,
 }
 
+/// The structure of an endpoint, which is used to send and receive IPC
 plus_define_bitfield! {
     endpoint_t, 2, 0, 0, 0 => {
         new, 0 => {
@@ -31,16 +33,19 @@ plus_define_bitfield! {
 
 impl endpoint_t {
     #[inline]
+    /// Get the raw pointer(usize) to the endpoint
     pub fn get_ptr(&self) -> pptr_t {
         self as *const Self as pptr_t
     }
 
     #[inline]
+    /// Get the state of the endpoint
     pub fn get_state(&self) -> EPState {
         unsafe { core::mem::transmute::<u8, EPState>(self.get_usize_state() as u8) }
     }
 
     #[inline]
+    /// Get the tcb queue of the queue
     pub fn get_queue(&self) -> tcb_queue_t {
         tcb_queue_t {
             head: self.get_queue_head(),
@@ -49,12 +54,16 @@ impl endpoint_t {
     }
 
     #[inline]
+    /// Set the tcb queue to the queue
     pub fn set_queue(&mut self, tcb_queue: &tcb_queue_t) {
         self.set_queue_head(tcb_queue.head);
         self.set_queue_tail(tcb_queue.tail);
     }
 
     #[inline]
+    /// Cancel the IPC of the tcb in the endpoint, and set the tcb to inactive
+    /// # Arguments
+    /// * `tcb` - The tcb to cancel the IPC
     pub fn cancel_ipc(&mut self, tcb: &mut tcb_t) {
         let mut queue = self.get_queue();
         queue.ep_dequeue(tcb);
@@ -66,6 +75,7 @@ impl endpoint_t {
     }
 
     #[inline]
+    /// Cancel all IPC in the endpoint
     pub fn cancel_all_ipc(&mut self) {
         match self.get_state() {
             EPState::Idle => {}
@@ -84,6 +94,9 @@ impl endpoint_t {
         }
     }
 
+    /// Cancel badged sends in the endpoint, and set the tcb to restart
+    /// # Arguments
+    /// * `badge` - The badge to cancel
     pub fn cancel_badged_sends(&mut self, badge: usize) {
         match self.get_state() {
             EPState::Idle | EPState::Recv => {}
@@ -111,6 +124,14 @@ impl endpoint_t {
         }
     }
 
+    /// Send an IPC to the endpoint, if the endpoint is idle or send, the tcb will be blocked immediately
+    /// , otherwise the thread will do ipc transfer to the destination thread(queue head)
+    /// * `src_thread` - The source thread to send the IPC
+    /// * `blocking` - If the IPC is blocking
+    /// * `do_call` - If the IPC is a call
+    /// * `can_grant` - If the IPC can grant
+    /// * `badge` - The badge of the IPC
+    /// * `can_grant_reply` - If the IPC can grant the reply
     pub fn send_ipc(
         &mut self,
         src_thread: &mut tcb_t,
@@ -171,6 +192,12 @@ impl endpoint_t {
         }
     }
 
+    /// Receive an IPC from the endpoint, if the endpoint is idle or recv, the tcb will be blocked immediately
+    /// , otherwise the thread will be transferred from the src thread(queue head)
+    /// # Arguments
+    /// * `thread` - The thread to receive the IPC
+    /// * `is_blocking` - If the IPC is blocking
+    /// * `grant` - If the IPC can grant
     pub fn receive_ipc(&mut self, thread: &mut tcb_t, is_blocking: bool, grant: bool) {
         if thread.complete_signal() {
             return;
