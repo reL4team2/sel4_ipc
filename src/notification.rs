@@ -110,7 +110,7 @@ impl notification_t {
                     if tcb.get_state() == ThreadState::ThreadStateBlockedOnReceive {
                         tcb.cancel_ipc();
                         set_thread_state(tcb, ThreadState::ThreadStateRunning);
-                        tcb.set_register(badgeRegister, badge);
+                        tcb.tcbArch.set_register(badgeRegister, badge);
                         possible_switch_to(tcb);
                     } else {
                         self.active(badge);
@@ -128,7 +128,7 @@ impl notification_t {
                         self.set_state(NtfnState::Idle as usize);
                     }
                     set_thread_state(dest, ThreadState::ThreadStateRunning);
-                    dest.set_register(badgeRegister, badge);
+                    dest.tcbArch.set_register(badgeRegister, badge);
                     possible_switch_to(dest);
                 } else {
                     panic!("queue is empty!")
@@ -153,12 +153,14 @@ impl notification_t {
                     self.set_state(NtfnState::Waiting as usize);
                     self.set_queue(&queue);
                 } else {
-                    recv_thread.set_register(badgeRegister, 0);
+                    recv_thread.tcbArch.set_register(badgeRegister, 0);
                 }
             }
 
             NtfnState::Active => {
-                recv_thread.set_register(badgeRegister, self.get_msg_identifier());
+                recv_thread
+                    .tcbArch
+                    .set_register(badgeRegister, self.get_msg_identifier());
                 self.set_state(NtfnState::Idle as usize);
             }
         }

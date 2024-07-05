@@ -187,7 +187,7 @@ impl endpoint_t {
                     self.set_queue(&queue);
                 } else {
                     // NBReceive failed
-                    thread.set_register(badgeRegister, 0);
+                    thread.tcbArch.set_register(badgeRegister, 0);
                 }
             }
             EPState::Send => {
