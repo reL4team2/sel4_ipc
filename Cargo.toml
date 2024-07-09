@@ -4,9 +4,9 @@ version = "0.1.0"
 edition = "2021"
 
 [dependencies]
-sel4_common = { path = "../sel4_common" }
-sel4_cspace = { path = "../sel4_cspace" }
-sel4_vspace = { path = "../sel4_vspace" }
-sel4_task = { path = "../sel4_task" }
+sel4_common = { git = "https://github.com/rel4team/sel4_common.git", branch = "mi_dev" }
+sel4_cspace = { git = "https://github.com/rel4team/sel4_cspace.git", branch = "mi_dev" }
+sel4_vspace = { git = "https://github.com/rel4team/sel4_vspace.git", branch = "mi_dev" }
+sel4_task = { git = "https://github.com/rel4team/sel4_task.git", branch = "mi_dev" }
 
 [features]
