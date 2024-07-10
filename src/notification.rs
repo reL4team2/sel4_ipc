@@ -14,6 +14,7 @@ pub enum NtfnState {
     Active = 2,
 }
 
+#[cfg(target_arch="riscv64")]
 // The structure of a notification, which is used to send and receive signals
 plus_define_bitfield! {
     notification_t, 4, 0, 0, 0 => {
@@ -26,6 +27,22 @@ plus_define_bitfield! {
         }
     }
 }
+
+
+#[cfg(target_arch="aarch64")]
+// The structure of a notification, which is used to send and receive signals
+plus_define_bitfield! {
+    notification_t, 4, 0, 0, 0 => {
+        new, 0 => {
+            bound_tcb, get_bound_tcb, set_bound_tcb, 3, 0, 48, 0, true,
+            msg_identifier, get_msg_identifier, set_msg_identifier, 2, 0, 64, 0, false,
+            queue_head, get_queue_head, set_queue_head, 1, 0, 48, 0, true,
+            queue_tail, get_queue_tail, set_queue_tail, 0, 16, 48, 0, true,
+            state, get_usize_state, set_state, 0, 0, 2, 0, false
+        }
+    }
+}
+
 
 impl notification_t {
     #[inline]
