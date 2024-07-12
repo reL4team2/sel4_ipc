@@ -20,8 +20,7 @@ pub enum EPState {
     Recv = 2,
 }
 
-
-#[cfg(target_arch="riscv64")]
+#[cfg(target_arch = "riscv64")]
 // The structure of an endpoint, which is used to send and receive IPC
 plus_define_bitfield! {
     endpoint_t, 2, 0, 0, 0 => {
@@ -33,7 +32,7 @@ plus_define_bitfield! {
     }
 }
 
-#[cfg(target_arch="aarch64")]
+#[cfg(target_arch = "aarch64")]
 // The structure of an endpoint, which is used to send and receive IPC
 plus_define_bitfield! {
     endpoint_t, 2, 0, 0, 0 => {
@@ -44,7 +43,6 @@ plus_define_bitfield! {
         }
     }
 }
-
 
 impl endpoint_t {
     #[inline]
