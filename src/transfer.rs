@@ -36,26 +36,26 @@ pub trait Transfer {
     fn do_fault_transfer(&self, receiver: &mut tcb_t, badge: usize);
 
     fn do_normal_transfer(
-        &self,
+        &mut self,
         receiver: &mut tcb_t,
         endpoint: Option<&endpoint_t>,
         badge: usize,
         can_grant: bool,
     );
 
-    fn do_fault_reply_transfer(&self, receiver: &mut tcb_t) -> bool;
+    fn do_fault_reply_transfer(&mut self, receiver: &mut tcb_t) -> bool;
 
     fn complete_signal(&mut self) -> bool;
 
     fn do_ipc_transfer(
-        &self,
+        &mut self,
         receiver: &mut tcb_t,
         endpoint: Option<&endpoint_t>,
         badge: usize,
         grant: bool,
     );
 
-    fn do_reply(&self, receiver: &mut tcb_t, slot: &mut cte_t, grant: bool);
+    fn do_reply(&mut self, receiver: &mut tcb_t, slot: &mut cte_t, grant: bool);
 }
 
 impl Transfer for tcb_t {
@@ -225,7 +225,7 @@ impl Transfer for tcb_t {
     }
 
     fn do_normal_transfer(
-        &self,
+        &mut self,
         receiver: &mut tcb_t,
         endpoint: Option<&endpoint_t>,
         badge: usize,
@@ -246,7 +246,7 @@ impl Transfer for tcb_t {
         receiver.tcbArch.set_register(ArchReg::Badge, badge);
     }
 
-    fn do_fault_reply_transfer(&self, receiver: &mut tcb_t) -> bool {
+    fn do_fault_reply_transfer(&mut self, receiver: &mut tcb_t) -> bool {
         let tag =
             seL4_MessageInfo_t::from_word_security(self.tcbArch.get_register(ArchReg::MsgInfo));
         let label = tag.get_label();
@@ -287,7 +287,7 @@ impl Transfer for tcb_t {
     }
 
     fn do_ipc_transfer(
-        &self,
+        &mut self,
         receiver: &mut tcb_t,
         endpoint: Option<&endpoint_t>,
         badge: usize,
@@ -300,7 +300,7 @@ impl Transfer for tcb_t {
         }
     }
 
-    fn do_reply(&self, receiver: &mut tcb_t, slot: &mut cte_t, grant: bool) {
+    fn do_reply(&mut self, receiver: &mut tcb_t, slot: &mut cte_t, grant: bool) {
         assert_eq!(receiver.get_state(), ThreadState::ThreadStateBlockedOnReply);
         let fault_type = receiver.tcbFault.get_fault_type();
         if likely(fault_type == FaultType::NullFault) {
