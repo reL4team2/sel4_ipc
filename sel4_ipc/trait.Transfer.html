@@ -1,0 +1,232 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="The trait for IPC transfer, please see doc.md for more details"><title>Transfer in sel4_ipc - Rust</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../static.files/rustdoc-fecee23daa4e8a6d.css"><meta name="rustdoc-vars" data-root-path="../" data-static-root-path="../static.files/" data-current-crate="sel4_ipc" data-themes="" data-resource-suffix="" data-rustdoc-version="1.83.0-nightly (d6c8169c1 2024-09-03)" data-channel="nightly" data-search-js="search-a99f1315e7cc5121.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../static.files/storage-118b08c4c78b968e.js"></script><script defer src="sidebar-items.js"></script><script defer src="../static.files/main-921df33f47b8780c.js"></script><noscript><link rel="stylesheet" href="../static.files/noscript-3b12f09e550e0385.css"></noscript><link rel="alternate icon" type="image/png" href="../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc trait"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle" title="show sidebar"></button></nav><nav class="sidebar"><div class="sidebar-crate"><h2><a href="../sel4_ipc/index.html">sel4_<wbr>ipc</a><span class="version">0.1.0</span></h2></div><h2 class="location"><a href="#">Transfer</a></h2><div class="sidebar-elems"><section><h3><a href="#required-methods">Required Methods</a></h3><ul class="block"><li><a href="#tymethod.cancel_ipc">cancel_ipc</a></li><li><a href="#tymethod.complete_signal">complete_signal</a></li><li><a href="#tymethod.do_fault_reply_transfer">do_fault_reply_transfer</a></li><li><a href="#tymethod.do_fault_transfer">do_fault_transfer</a></li><li><a href="#tymethod.do_ipc_transfer">do_ipc_transfer</a></li><li><a href="#tymethod.do_normal_transfer">do_normal_transfer</a></li><li><a href="#tymethod.do_reply">do_reply</a></li><li><a href="#tymethod.set_transfer_caps">set_transfer_caps</a></li><li><a href="#tymethod.set_transfer_caps_with_buf">set_transfer_caps_with_buf</a></li></ul><h3><a href="#foreign-impls">Implementations on Foreign Types</a></h3><ul class="block"><li><a href="#impl-Transfer-for-Unimock">Unimock</a></li><li><a href="#impl-Transfer-for-tcb_t">tcb_t</a></li></ul><h3><a href="#implementors">Implementors</a></h3></section><h2><a href="index.html">In crate sel4_<wbr>ipc</a></h2></div></nav><div class="sidebar-resizer"></div><main><div class="width-limiter"><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="main-heading"><h1>Trait <a href="index.html">sel4_ipc</a>::<wbr><a class="trait" href="#">Transfer</a><button id="copy-path" title="Copy item path to clipboard">Copy item path</button></h1><span class="out-of-band"><a class="src" href="../src/sel4_ipc/transfer.rs.html#20-205">source</a> · <button id="toggle-all-docs" title="collapse all docs">[<span>&#x2212;</span>]</button></span></div><pre class="rust item-decl"><code>pub trait Transfer {
+    // Required methods
+    fn <a href="#tymethod.cancel_ipc" class="fn">cancel_ipc</a>(&amp;mut self);
+<span class="item-spacer"></span>    fn <a href="#tymethod.set_transfer_caps" class="fn">set_transfer_caps</a>(
+        &amp;mut self,
+        endpoint: <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;&amp;<a class="struct" href="struct.endpoint_t.html" title="struct sel4_ipc::endpoint_t">endpoint_t</a>&gt;,
+        info: &amp;mut seL4_MessageInfo_t,
+        current_extra_caps: &amp;[pptr_t; <a class="primitive" href="https://doc.rust-lang.org/nightly/core/primitive.array.html">3</a>],
+    );
+<span class="item-spacer"></span>    fn <a href="#tymethod.set_transfer_caps_with_buf" class="fn">set_transfer_caps_with_buf</a>(
+        &amp;mut self,
+        endpoint: <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;&amp;<a class="struct" href="struct.endpoint_t.html" title="struct sel4_ipc::endpoint_t">endpoint_t</a>&gt;,
+        info: &amp;mut seL4_MessageInfo_t,
+        current_extra_caps: &amp;[pptr_t; <a class="primitive" href="https://doc.rust-lang.org/nightly/core/primitive.array.html">3</a>],
+        ipc_buffer: <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;&amp;mut seL4_IPCBuffer&gt;,
+    );
+<span class="item-spacer"></span>    fn <a href="#tymethod.do_fault_transfer" class="fn">do_fault_transfer</a>(&amp;self, receiver: &amp;mut tcb_t, badge: <a class="primitive" href="https://doc.rust-lang.org/nightly/core/primitive.usize.html">usize</a>);
+<span class="item-spacer"></span>    fn <a href="#tymethod.do_normal_transfer" class="fn">do_normal_transfer</a>(
+        &amp;self,
+        receiver: &amp;mut tcb_t,
+        endpoint: <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;&amp;<a class="struct" href="struct.endpoint_t.html" title="struct sel4_ipc::endpoint_t">endpoint_t</a>&gt;,
+        badge: <a class="primitive" href="https://doc.rust-lang.org/nightly/core/primitive.usize.html">usize</a>,
+        can_grant: <a class="primitive" href="https://doc.rust-lang.org/nightly/core/primitive.bool.html">bool</a>,
+    );
+<span class="item-spacer"></span>    fn <a href="#tymethod.do_fault_reply_transfer" class="fn">do_fault_reply_transfer</a>(&amp;self, receiver: &amp;mut tcb_t) -&gt; <a class="primitive" href="https://doc.rust-lang.org/nightly/core/primitive.bool.html">bool</a>;
+<span class="item-spacer"></span>    fn <a href="#tymethod.complete_signal" class="fn">complete_signal</a>(&amp;mut self) -&gt; <a class="primitive" href="https://doc.rust-lang.org/nightly/core/primitive.bool.html">bool</a>;
+<span class="item-spacer"></span>    fn <a href="#tymethod.do_ipc_transfer" class="fn">do_ipc_transfer</a>(
+        &amp;self,
+        receiver: &amp;mut tcb_t,
+        endpoint: <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;&amp;<a class="struct" href="struct.endpoint_t.html" title="struct sel4_ipc::endpoint_t">endpoint_t</a>&gt;,
+        badge: <a class="primitive" href="https://doc.rust-lang.org/nightly/core/primitive.usize.html">usize</a>,
+        grant: <a class="primitive" href="https://doc.rust-lang.org/nightly/core/primitive.bool.html">bool</a>,
+    );
+<span class="item-spacer"></span>    fn <a href="#tymethod.do_reply" class="fn">do_reply</a>(&amp;self, receiver: &amp;mut tcb_t, slot: &amp;mut cte_t, grant: <a class="primitive" href="https://doc.rust-lang.org/nightly/core/primitive.bool.html">bool</a>);
+}</code></pre><details class="toggle top-doc" open><summary class="hideme"><span>Expand description</span></summary><div class="docblock"><p>The trait for IPC transfer, please see doc.md for more details</p>
+</div></details><h2 id="required-methods" class="section-header">Required Methods<a href="#required-methods" class="anchor">§</a></h2><div class="methods"><details class="toggle method-toggle" open><summary><section id="tymethod.cancel_ipc" class="method"><a class="src rightside" href="../src/sel4_ipc/transfer.rs.html#72">source</a><h4 class="code-header">fn <a href="#tymethod.cancel_ipc" class="fn">cancel_ipc</a>(&amp;mut self)</h4></section></summary><div class="docblock"><p>Cancel the IPC of thread</p>
+<h5 id="example"><a class="doc-anchor" href="#example">§</a>Example</h5>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">let </span>mock_tcb = <span class="kw-2">&amp;mut </span>new_mock_tcb_with_state(ThreadState::ThreadStateRunning);
+<span class="comment">// endpoint
+</span>{
+    <span class="kw">let </span>tmp = <span class="kw-2">&amp;mut </span>endpoint_t::new(<span class="number">0</span>, <span class="number">0</span>, EPState::Idle <span class="kw">as </span>usize);
+    <span class="kw">let </span><span class="kw-2">mut </span>valid_addr = tmp.get_ptr();
+    <span class="kw">if </span>(valid_addr &amp; <span class="number">0xf</span>) != <span class="number">0 </span>{
+        valid_addr = valid_addr &gt;&gt; <span class="number">4 </span>&lt;&lt; <span class="number">4</span>;
+    }
+    <span class="kw">let </span>ep = <span class="kw">unsafe </span>{ <span class="kw-2">&amp;mut *</span>(valid_addr <span class="kw">as </span><span class="kw-2">*mut </span>endpoint_t) };
+    ep.send_ipc(mock_tcb, <span class="bool-val">true</span>, <span class="bool-val">false</span>, <span class="bool-val">false</span>, <span class="number">0</span>, <span class="bool-val">false</span>); <span class="comment">// send
+    </span><span class="macro">assert_eq!</span>(ep.get_state(), EPState::Send);
+    <span class="macro">assert_eq!</span>(ep.get_queue_head(), mock_tcb.get_ptr());
+    <span class="macro">assert_eq!</span>(ep.get_queue_tail(), mock_tcb.get_ptr());
+    <span class="macro">assert_eq!</span>(mock_tcb.get_state(), ThreadState::ThreadStateBlockedOnSend);
+    mock_tcb.cancel_ipc();
+    <span class="macro">assert_eq!</span>(ep.get_state(), EPState::Idle);
+    <span class="macro">assert_eq!</span>(mock_tcb.get_state(), ThreadState::ThreadStateInactive);
+    <span class="kw">let </span>queue = ep.get_queue();
+    <span class="macro">assert_eq!</span>(queue.tail, <span class="number">0</span>);
+    <span class="macro">assert_eq!</span>(queue.head, <span class="number">0</span>);
+}
+<span class="comment">// notification
+</span>{
+    <span class="kw">let </span>tmp = <span class="kw-2">&amp;mut </span>notification_t::new(<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, NtfnState::Idle <span class="kw">as </span>usize);
+    <span class="kw">let </span><span class="kw-2">mut </span>valid_addr = tmp.get_ptr();
+    <span class="kw">if </span>(valid_addr &amp; <span class="number">0xf</span>) != <span class="number">0 </span>{
+        valid_addr = valid_addr &gt;&gt; <span class="number">4 </span>&lt;&lt; <span class="number">4</span>;
+    }
+    <span class="kw">let </span>ntfn = <span class="kw">unsafe </span>{ <span class="kw-2">&amp;mut *</span>(valid_addr <span class="kw">as </span><span class="kw-2">*mut </span>notification_t) };
+    ntfn.receive_signal(mock_tcb, <span class="bool-val">true</span>); <span class="comment">// receive
+    </span><span class="macro">assert_eq!</span>(ntfn.get_state(), NtfnState::Waiting);
+    <span class="macro">assert_eq!</span>(ntfn.get_queue_head(), mock_tcb.get_ptr());
+    <span class="macro">assert_eq!</span>(ntfn.get_queue_tail(), mock_tcb.get_ptr());
+    <span class="macro">assert_eq!</span>(
+        mock_tcb.get_state(),
+        ThreadState::ThreadStateBlockedOnNotification
+    );
+    mock_tcb.cancel_ipc();
+    <span class="macro">assert_eq!</span>(ntfn.get_state(), NtfnState::Idle);
+    <span class="macro">assert_eq!</span>(ntfn.get_queue_head(), <span class="number">0</span>);
+    <span class="macro">assert_eq!</span>(ntfn.get_queue_tail(), <span class="number">0</span>);
+    <span class="macro">assert_eq!</span>(mock_tcb.get_state(), ThreadState::ThreadStateInactive);
+}</code></pre></div>
+</div></details><details class="toggle method-toggle" open><summary><section id="tymethod.set_transfer_caps" class="method"><a class="src rightside" href="../src/sel4_ipc/transfer.rs.html#126-131">source</a><h4 class="code-header">fn <a href="#tymethod.set_transfer_caps" class="fn">set_transfer_caps</a>(
+    &amp;mut self,
+    endpoint: <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;&amp;<a class="struct" href="struct.endpoint_t.html" title="struct sel4_ipc::endpoint_t">endpoint_t</a>&gt;,
+    info: &amp;mut seL4_MessageInfo_t,
+    current_extra_caps: &amp;[pptr_t; <a class="primitive" href="https://doc.rust-lang.org/nightly/core/primitive.array.html">3</a>],
+)</h4></section></summary><div class="docblock"><h5 id="examples"><a class="doc-anchor" href="#examples">§</a>Examples</h5>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">// transfer_set_transfer_caps_with_buf_should_immediately_return_when_ipc_buffer_is_none_test
+</span><span class="kw">let </span>mock_tcb = <span class="kw-2">&amp;mut </span>new_mock_tcb_with_state(ThreadState::ThreadStateRunning);
+<span class="kw">let </span>ep = <span class="kw-2">&amp;mut </span>endpoint_t::new(<span class="number">0</span>, <span class="number">0</span>, EPState::Idle <span class="kw">as </span>usize);
+<span class="kw">let </span>info =
+    <span class="kw-2">&amp;mut </span>seL4_MessageInfo_t::new(MessageLabel::CNodeCancelBadgedSends <span class="kw">as </span>usize, <span class="number">6</span>, <span class="number">3</span>, <span class="number">0</span>);
+<span class="macro">assert_eq!</span>(info.get_label(), MessageLabel::CNodeCancelBadgedSends);
+<span class="macro">assert_eq!</span>(info.get_extra_caps(), <span class="number">3</span>);
+<span class="macro">assert_eq!</span>(info.get_caps_unwrapped(), <span class="number">6</span>);
+<span class="kw">let </span>cur_extra_caps: [pptr_t; seL4_MsgMaxExtraCaps] = [<span class="number">0</span>; seL4_MsgMaxExtraCaps];
+mock_tcb.set_transfer_caps_with_buf(<span class="prelude-val">Some</span>(ep), info, <span class="kw-2">&amp;</span>cur_extra_caps, <span class="prelude-val">None</span>);
+<span class="macro">assert_eq!</span>(info.get_label(), MessageLabel::CNodeCancelBadgedSends);
+<span class="macro">assert_eq!</span>(info.get_extra_caps(), <span class="number">0</span>);
+<span class="macro">assert_eq!</span>(info.get_caps_unwrapped(), <span class="number">0</span>);</code></pre></div>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">// transfer_set_transfer_caps_with_buf_endpoint_cap_test
+</span><span class="kw">let </span>mock_tcb = <span class="kw-2">&amp;mut </span>new_mock_tcb_with_state(ThreadState::ThreadStateRunning);
+<span class="kw">let </span>ep = <span class="kw-2">&amp;mut </span>endpoint_t::new(<span class="number">0</span>, <span class="number">0</span>, EPState::Idle <span class="kw">as </span>usize);
+<span class="kw">let </span>info =
+    <span class="kw-2">&amp;mut </span>seL4_MessageInfo_t::new(MessageLabel::CNodeCancelBadgedSends <span class="kw">as </span>usize, <span class="number">6</span>, <span class="number">3</span>, <span class="number">0</span>);
+<span class="kw">let </span><span class="kw-2">mut </span>ipc_buffer = seL4_IPCBuffer {
+    tag: <span class="number">0</span>,
+    msg: [<span class="number">0</span>; seL4_MsgMaxLength],
+    userData: <span class="number">0</span>,
+    caps_or_badges: [<span class="number">0</span>; seL4_MsgMaxExtraCaps],
+    receiveCNode: <span class="number">0</span>,
+    receiveIndex: <span class="number">0</span>,
+    receiveDepth: <span class="number">0</span>,
+};
+<span class="macro">assert_eq!</span>(info.get_label(), MessageLabel::CNodeCancelBadgedSends);
+<span class="macro">assert_eq!</span>(info.get_extra_caps(), <span class="number">3</span>);
+<span class="macro">assert_eq!</span>(info.get_caps_unwrapped(), <span class="number">6</span>);
+
+<span class="kw">let </span>badge = <span class="number">0x1000</span>;
+<span class="kw">let </span><span class="kw-2">mut </span>cur_extra_caps: [pptr_t; seL4_MsgMaxExtraCaps] = [<span class="number">0</span>; seL4_MsgMaxExtraCaps];
+<span class="kw">let </span>cte = cte_t {
+    cap: cap_t::new_endpoint_cap(badge, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, ep.get_ptr()),
+    cteMDBNode: mdb_node_t::new(<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>),
+};
+cur_extra_caps[<span class="number">0</span>] = cte.get_ptr() <span class="kw">as </span>pptr_t;
+
+mock_tcb.set_transfer_caps_with_buf(<span class="prelude-val">Some</span>(ep), info, <span class="kw-2">&amp;</span>cur_extra_caps, <span class="prelude-val">Some</span>(<span class="kw-2">&amp;mut </span>ipc_buffer));
+<span class="macro">assert_eq!</span>(ipc_buffer.caps_or_badges[<span class="number">0</span>], badge);
+<span class="macro">assert_eq!</span>(ipc_buffer.caps_or_badges[<span class="number">1</span>], <span class="number">0</span>);
+<span class="macro">assert_eq!</span>(info.get_caps_unwrapped(), <span class="number">1</span>);
+<span class="macro">assert_eq!</span>(info.get_extra_caps(), <span class="number">1</span>);</code></pre></div>
+</div></details><details class="toggle method-toggle" open><summary><section id="tymethod.set_transfer_caps_with_buf" class="method"><a class="src rightside" href="../src/sel4_ipc/transfer.rs.html#151-157">source</a><h4 class="code-header">fn <a href="#tymethod.set_transfer_caps_with_buf" class="fn">set_transfer_caps_with_buf</a>(
+    &amp;mut self,
+    endpoint: <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;&amp;<a class="struct" href="struct.endpoint_t.html" title="struct sel4_ipc::endpoint_t">endpoint_t</a>&gt;,
+    info: &amp;mut seL4_MessageInfo_t,
+    current_extra_caps: &amp;[pptr_t; <a class="primitive" href="https://doc.rust-lang.org/nightly/core/primitive.array.html">3</a>],
+    ipc_buffer: <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;&amp;mut seL4_IPCBuffer&gt;,
+)</h4></section></summary><div class="docblock"><h5 id="examples-1"><a class="doc-anchor" href="#examples-1">§</a>Examples</h5>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">// transfer_set_transfer_caps_with_buf_should_immediately_return_when_ipc_buffer_is_none_test
+</span><span class="kw">let </span>mock_tcb = <span class="kw-2">&amp;mut </span>new_mock_tcb_with_state(ThreadState::ThreadStateRunning);
+<span class="kw">let </span>ep = <span class="kw-2">&amp;mut </span>endpoint_t::new(<span class="number">0</span>, <span class="number">0</span>, EPState::Idle <span class="kw">as </span>usize);
+<span class="kw">let </span>info =
+    <span class="kw-2">&amp;mut </span>seL4_MessageInfo_t::new(MessageLabel::CNodeCancelBadgedSends <span class="kw">as </span>usize, <span class="number">6</span>, <span class="number">3</span>, <span class="number">0</span>);
+<span class="macro">assert_eq!</span>(info.get_label(), MessageLabel::CNodeCancelBadgedSends);
+<span class="macro">assert_eq!</span>(info.get_extra_caps(), <span class="number">3</span>);
+<span class="macro">assert_eq!</span>(info.get_caps_unwrapped(), <span class="number">6</span>);
+<span class="kw">let </span>cur_extra_caps: [pptr_t; seL4_MsgMaxExtraCaps] = [<span class="number">0</span>; seL4_MsgMaxExtraCaps];
+mock_tcb.set_transfer_caps_with_buf(<span class="prelude-val">Some</span>(ep), info, <span class="kw-2">&amp;</span>cur_extra_caps, <span class="prelude-val">None</span>);
+<span class="macro">assert_eq!</span>(info.get_label(), MessageLabel::CNodeCancelBadgedSends);
+<span class="macro">assert_eq!</span>(info.get_extra_caps(), <span class="number">0</span>);
+<span class="macro">assert_eq!</span>(info.get_caps_unwrapped(), <span class="number">0</span>);</code></pre></div>
+</div></details><details class="toggle method-toggle" open><summary><section id="tymethod.do_fault_transfer" class="method"><a class="src rightside" href="../src/sel4_ipc/transfer.rs.html#182">source</a><h4 class="code-header">fn <a href="#tymethod.do_fault_transfer" class="fn">do_fault_transfer</a>(&amp;self, receiver: &amp;mut tcb_t, badge: <a class="primitive" href="https://doc.rust-lang.org/nightly/core/primitive.usize.html">usize</a>)</h4></section></summary><div class="docblock"><h5 id="examples-2"><a class="doc-anchor" href="#examples-2">§</a>Examples</h5>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">let </span>mock_tcb = <span class="kw-2">&amp;mut </span>new_mock_tcb_with_state(ThreadState::ThreadStateRunning);
+<span class="kw">let </span>mock_receiver = <span class="kw-2">&amp;mut </span>new_mock_tcb_with_state(ThreadState::ThreadStateRunning);
+
+<span class="kw">let </span>mock_fault = seL4_Fault_t::new_cap_fault(<span class="number">0x1000</span>, <span class="number">0</span>);
+<span class="kw">let </span>mock_fault_ip = <span class="number">0x2000</span>;
+mock_tcb.tcbFault = mock_fault;
+mock_tcb
+    .tcbArch
+    .set_register(ArchReg::FaultIP, mock_fault_ip);
+mock_tcb.set_fault_mrs(mock_receiver);
+<span class="kw">let </span>badge = <span class="number">3</span>;
+mock_tcb.do_fault_transfer(mock_receiver, badge);
+
+<span class="kw">let </span>offset = seL4_CapFault_IP;
+<span class="macro">assert_eq!</span>(
+    mock_receiver.tcbArch.get_register(ArchReg::Msg(offset)),
+    <span class="number">0x2000
+</span>);
+
+<span class="macro">assert_eq!</span>(mock_receiver.tcbArch.get_register(ArchReg::Badge), badge);</code></pre></div>
+</div></details><section id="tymethod.do_normal_transfer" class="method"><a class="src rightside" href="../src/sel4_ipc/transfer.rs.html#184-190">source</a><h4 class="code-header">fn <a href="#tymethod.do_normal_transfer" class="fn">do_normal_transfer</a>(
+    &amp;self,
+    receiver: &amp;mut tcb_t,
+    endpoint: <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;&amp;<a class="struct" href="struct.endpoint_t.html" title="struct sel4_ipc::endpoint_t">endpoint_t</a>&gt;,
+    badge: <a class="primitive" href="https://doc.rust-lang.org/nightly/core/primitive.usize.html">usize</a>,
+    can_grant: <a class="primitive" href="https://doc.rust-lang.org/nightly/core/primitive.bool.html">bool</a>,
+)</h4></section><section id="tymethod.do_fault_reply_transfer" class="method"><a class="src rightside" href="../src/sel4_ipc/transfer.rs.html#192">source</a><h4 class="code-header">fn <a href="#tymethod.do_fault_reply_transfer" class="fn">do_fault_reply_transfer</a>(&amp;self, receiver: &amp;mut tcb_t) -&gt; <a class="primitive" href="https://doc.rust-lang.org/nightly/core/primitive.bool.html">bool</a></h4></section><section id="tymethod.complete_signal" class="method"><a class="src rightside" href="../src/sel4_ipc/transfer.rs.html#194">source</a><h4 class="code-header">fn <a href="#tymethod.complete_signal" class="fn">complete_signal</a>(&amp;mut self) -&gt; <a class="primitive" href="https://doc.rust-lang.org/nightly/core/primitive.bool.html">bool</a></h4></section><section id="tymethod.do_ipc_transfer" class="method"><a class="src rightside" href="../src/sel4_ipc/transfer.rs.html#196-202">source</a><h4 class="code-header">fn <a href="#tymethod.do_ipc_transfer" class="fn">do_ipc_transfer</a>(
+    &amp;self,
+    receiver: &amp;mut tcb_t,
+    endpoint: <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;&amp;<a class="struct" href="struct.endpoint_t.html" title="struct sel4_ipc::endpoint_t">endpoint_t</a>&gt;,
+    badge: <a class="primitive" href="https://doc.rust-lang.org/nightly/core/primitive.usize.html">usize</a>,
+    grant: <a class="primitive" href="https://doc.rust-lang.org/nightly/core/primitive.bool.html">bool</a>,
+)</h4></section><section id="tymethod.do_reply" class="method"><a class="src rightside" href="../src/sel4_ipc/transfer.rs.html#204">source</a><h4 class="code-header">fn <a href="#tymethod.do_reply" class="fn">do_reply</a>(&amp;self, receiver: &amp;mut tcb_t, slot: &amp;mut cte_t, grant: <a class="primitive" href="https://doc.rust-lang.org/nightly/core/primitive.bool.html">bool</a>)</h4></section></div><h2 id="foreign-impls" class="section-header">Implementations on Foreign Types<a href="#foreign-impls" class="anchor">§</a></h2><details class="toggle implementors-toggle"><summary><section id="impl-Transfer-for-Unimock" class="impl"><a class="src rightside" href="../src/sel4_ipc/transfer.rs.html#19">source</a><a href="#impl-Transfer-for-Unimock" class="anchor">§</a><h3 class="code-header">impl <a class="trait" href="trait.Transfer.html" title="trait sel4_ipc::Transfer">Transfer</a> for Unimock</h3></section></summary><div class="docblock"><p>Mocked implementation. Mock API is available at <a href="TransferMock/index.html" title="mod sel4_ipc::TransferMock">TransferMock</a>.</p>
+</div><div class="impl-items"><section id="method.cancel_ipc" class="method trait-impl"><a class="src rightside" href="../src/sel4_ipc/transfer.rs.html#72">source</a><a href="#method.cancel_ipc" class="anchor">§</a><h4 class="code-header">fn <a href="#tymethod.cancel_ipc" class="fn">cancel_ipc</a>(&amp;mut self)</h4></section><section id="method.set_transfer_caps" class="method trait-impl"><a class="src rightside" href="../src/sel4_ipc/transfer.rs.html#126-131">source</a><a href="#method.set_transfer_caps" class="anchor">§</a><h4 class="code-header">fn <a href="#tymethod.set_transfer_caps" class="fn">set_transfer_caps</a>(
+    &amp;mut self,
+    endpoint: <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;&amp;<a class="struct" href="struct.endpoint_t.html" title="struct sel4_ipc::endpoint_t">endpoint_t</a>&gt;,
+    info: &amp;mut seL4_MessageInfo_t,
+    current_extra_caps: &amp;[pptr_t; <a class="primitive" href="https://doc.rust-lang.org/nightly/core/primitive.array.html">3</a>],
+)</h4></section><section id="method.set_transfer_caps_with_buf" class="method trait-impl"><a class="src rightside" href="../src/sel4_ipc/transfer.rs.html#151-157">source</a><a href="#method.set_transfer_caps_with_buf" class="anchor">§</a><h4 class="code-header">fn <a href="#tymethod.set_transfer_caps_with_buf" class="fn">set_transfer_caps_with_buf</a>(
+    &amp;mut self,
+    endpoint: <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;&amp;<a class="struct" href="struct.endpoint_t.html" title="struct sel4_ipc::endpoint_t">endpoint_t</a>&gt;,
+    info: &amp;mut seL4_MessageInfo_t,
+    current_extra_caps: &amp;[pptr_t; <a class="primitive" href="https://doc.rust-lang.org/nightly/core/primitive.array.html">3</a>],
+    ipc_buffer: <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;&amp;mut seL4_IPCBuffer&gt;,
+)</h4></section><section id="method.do_fault_transfer" class="method trait-impl"><a class="src rightside" href="../src/sel4_ipc/transfer.rs.html#182">source</a><a href="#method.do_fault_transfer" class="anchor">§</a><h4 class="code-header">fn <a href="#tymethod.do_fault_transfer" class="fn">do_fault_transfer</a>(&amp;self, receiver: &amp;mut tcb_t, badge: <a class="primitive" href="https://doc.rust-lang.org/nightly/core/primitive.usize.html">usize</a>)</h4></section><section id="method.do_normal_transfer" class="method trait-impl"><a class="src rightside" href="../src/sel4_ipc/transfer.rs.html#184-190">source</a><a href="#method.do_normal_transfer" class="anchor">§</a><h4 class="code-header">fn <a href="#tymethod.do_normal_transfer" class="fn">do_normal_transfer</a>(
+    &amp;self,
+    receiver: &amp;mut tcb_t,
+    endpoint: <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;&amp;<a class="struct" href="struct.endpoint_t.html" title="struct sel4_ipc::endpoint_t">endpoint_t</a>&gt;,
+    badge: <a class="primitive" href="https://doc.rust-lang.org/nightly/core/primitive.usize.html">usize</a>,
+    can_grant: <a class="primitive" href="https://doc.rust-lang.org/nightly/core/primitive.bool.html">bool</a>,
+)</h4></section><section id="method.do_fault_reply_transfer" class="method trait-impl"><a class="src rightside" href="../src/sel4_ipc/transfer.rs.html#192">source</a><a href="#method.do_fault_reply_transfer" class="anchor">§</a><h4 class="code-header">fn <a href="#tymethod.do_fault_reply_transfer" class="fn">do_fault_reply_transfer</a>(&amp;self, receiver: &amp;mut tcb_t) -&gt; <a class="primitive" href="https://doc.rust-lang.org/nightly/core/primitive.bool.html">bool</a></h4></section><section id="method.complete_signal" class="method trait-impl"><a class="src rightside" href="../src/sel4_ipc/transfer.rs.html#194">source</a><a href="#method.complete_signal" class="anchor">§</a><h4 class="code-header">fn <a href="#tymethod.complete_signal" class="fn">complete_signal</a>(&amp;mut self) -&gt; <a class="primitive" href="https://doc.rust-lang.org/nightly/core/primitive.bool.html">bool</a></h4></section><section id="method.do_ipc_transfer" class="method trait-impl"><a class="src rightside" href="../src/sel4_ipc/transfer.rs.html#196-202">source</a><a href="#method.do_ipc_transfer" class="anchor">§</a><h4 class="code-header">fn <a href="#tymethod.do_ipc_transfer" class="fn">do_ipc_transfer</a>(
+    &amp;self,
+    receiver: &amp;mut tcb_t,
+    endpoint: <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;&amp;<a class="struct" href="struct.endpoint_t.html" title="struct sel4_ipc::endpoint_t">endpoint_t</a>&gt;,
+    badge: <a class="primitive" href="https://doc.rust-lang.org/nightly/core/primitive.usize.html">usize</a>,
+    grant: <a class="primitive" href="https://doc.rust-lang.org/nightly/core/primitive.bool.html">bool</a>,
+)</h4></section><section id="method.do_reply" class="method trait-impl"><a class="src rightside" href="../src/sel4_ipc/transfer.rs.html#204">source</a><a href="#method.do_reply" class="anchor">§</a><h4 class="code-header">fn <a href="#tymethod.do_reply" class="fn">do_reply</a>(&amp;self, receiver: &amp;mut tcb_t, slot: &amp;mut cte_t, grant: <a class="primitive" href="https://doc.rust-lang.org/nightly/core/primitive.bool.html">bool</a>)</h4></section></div></details><details class="toggle implementors-toggle"><summary><section id="impl-Transfer-for-tcb_t" class="impl"><a class="src rightside" href="../src/sel4_ipc/transfer.rs.html#207-467">source</a><a href="#impl-Transfer-for-tcb_t" class="anchor">§</a><h3 class="code-header">impl <a class="trait" href="trait.Transfer.html" title="trait sel4_ipc::Transfer">Transfer</a> for tcb_t</h3></section></summary><div class="impl-items"><section id="method.cancel_ipc-1" class="method trait-impl"><a class="src rightside" href="../src/sel4_ipc/transfer.rs.html#208-231">source</a><a href="#method.cancel_ipc-1" class="anchor">§</a><h4 class="code-header">fn <a href="#tymethod.cancel_ipc" class="fn">cancel_ipc</a>(&amp;mut self)</h4></section><section id="method.set_transfer_caps-1" class="method trait-impl"><a class="src rightside" href="../src/sel4_ipc/transfer.rs.html#233-274">source</a><a href="#method.set_transfer_caps-1" class="anchor">§</a><h4 class="code-header">fn <a href="#tymethod.set_transfer_caps" class="fn">set_transfer_caps</a>(
+    &amp;mut self,
+    endpoint: <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;&amp;<a class="struct" href="struct.endpoint_t.html" title="struct sel4_ipc::endpoint_t">endpoint_t</a>&gt;,
+    info: &amp;mut seL4_MessageInfo_t,
+    current_extra_caps: &amp;[pptr_t; <a class="primitive" href="https://doc.rust-lang.org/nightly/core/primitive.array.html">3</a>],
+)</h4></section><section id="method.set_transfer_caps_with_buf-1" class="method trait-impl"><a class="src rightside" href="../src/sel4_ipc/transfer.rs.html#276-318">source</a><a href="#method.set_transfer_caps_with_buf-1" class="anchor">§</a><h4 class="code-header">fn <a href="#tymethod.set_transfer_caps_with_buf" class="fn">set_transfer_caps_with_buf</a>(
+    &amp;mut self,
+    endpoint: <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;&amp;<a class="struct" href="struct.endpoint_t.html" title="struct sel4_ipc::endpoint_t">endpoint_t</a>&gt;,
+    info: &amp;mut seL4_MessageInfo_t,
+    current_extra_caps: &amp;[pptr_t; <a class="primitive" href="https://doc.rust-lang.org/nightly/core/primitive.array.html">3</a>],
+    ipc_buffer: <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;&amp;mut seL4_IPCBuffer&gt;,
+)</h4></section><section id="method.do_fault_transfer-1" class="method trait-impl"><a class="src rightside" href="../src/sel4_ipc/transfer.rs.html#320-371">source</a><a href="#method.do_fault_transfer-1" class="anchor">§</a><h4 class="code-header">fn <a href="#tymethod.do_fault_transfer" class="fn">do_fault_transfer</a>(&amp;self, receiver: &amp;mut tcb_t, badge: <a class="primitive" href="https://doc.rust-lang.org/nightly/core/primitive.usize.html">usize</a>)</h4></section><section id="method.do_normal_transfer-1" class="method trait-impl"><a class="src rightside" href="../src/sel4_ipc/transfer.rs.html#373-393">source</a><a href="#method.do_normal_transfer-1" class="anchor">§</a><h4 class="code-header">fn <a href="#tymethod.do_normal_transfer" class="fn">do_normal_transfer</a>(
+    &amp;self,
+    receiver: &amp;mut tcb_t,
+    endpoint: <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;&amp;<a class="struct" href="struct.endpoint_t.html" title="struct sel4_ipc::endpoint_t">endpoint_t</a>&gt;,
+    badge: <a class="primitive" href="https://doc.rust-lang.org/nightly/core/primitive.usize.html">usize</a>,
+    can_grant: <a class="primitive" href="https://doc.rust-lang.org/nightly/core/primitive.bool.html">bool</a>,
+)</h4></section><section id="method.do_fault_reply_transfer-1" class="method trait-impl"><a class="src rightside" href="../src/sel4_ipc/transfer.rs.html#395-419">source</a><a href="#method.do_fault_reply_transfer-1" class="anchor">§</a><h4 class="code-header">fn <a href="#tymethod.do_fault_reply_transfer" class="fn">do_fault_reply_transfer</a>(&amp;self, receiver: &amp;mut tcb_t) -&gt; <a class="primitive" href="https://doc.rust-lang.org/nightly/core/primitive.bool.html">bool</a></h4></section><section id="method.complete_signal-1" class="method trait-impl"><a class="src rightside" href="../src/sel4_ipc/transfer.rs.html#421-433">source</a><a href="#method.complete_signal-1" class="anchor">§</a><h4 class="code-header">fn <a href="#tymethod.complete_signal" class="fn">complete_signal</a>(&amp;mut self) -&gt; <a class="primitive" href="https://doc.rust-lang.org/nightly/core/primitive.bool.html">bool</a></h4></section><section id="method.do_ipc_transfer-1" class="method trait-impl"><a class="src rightside" href="../src/sel4_ipc/transfer.rs.html#435-447">source</a><a href="#method.do_ipc_transfer-1" class="anchor">§</a><h4 class="code-header">fn <a href="#tymethod.do_ipc_transfer" class="fn">do_ipc_transfer</a>(
+    &amp;self,
+    receiver: &amp;mut tcb_t,
+    endpoint: <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;&amp;<a class="struct" href="struct.endpoint_t.html" title="struct sel4_ipc::endpoint_t">endpoint_t</a>&gt;,
+    badge: <a class="primitive" href="https://doc.rust-lang.org/nightly/core/primitive.usize.html">usize</a>,
+    grant: <a class="primitive" href="https://doc.rust-lang.org/nightly/core/primitive.bool.html">bool</a>,
+)</h4></section><section id="method.do_reply-1" class="method trait-impl"><a class="src rightside" href="../src/sel4_ipc/transfer.rs.html#449-466">source</a><a href="#method.do_reply-1" class="anchor">§</a><h4 class="code-header">fn <a href="#tymethod.do_reply" class="fn">do_reply</a>(&amp;self, receiver: &amp;mut tcb_t, slot: &amp;mut cte_t, grant: <a class="primitive" href="https://doc.rust-lang.org/nightly/core/primitive.bool.html">bool</a>)</h4></section></div></details><h2 id="implementors" class="section-header">Implementors<a href="#implementors" class="anchor">§</a></h2><div id="implementors-list"></div><script src="../trait.impl/sel4_ipc/transfer/trait.Transfer.js" data-ignore-extern-crates="unimock,sel4_task" async></script></section></div></main></body></html>

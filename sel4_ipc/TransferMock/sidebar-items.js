@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"struct":["cancel_ipc","complete_signal","do_fault_reply_transfer","do_fault_transfer","do_ipc_transfer","do_normal_transfer","do_reply","set_transfer_caps","set_transfer_caps_with_buf"]};

@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"constant":["EPState_Idle","EPState_Recv","EPState_Send"],"enum":["EPState","NtfnState"],"mod":["TransferMock"],"struct":["endpoint_t","notification_t"],"trait":["Transfer"]};
